@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -25,7 +26,7 @@ func main() {
 		// panics if we get an unexpected error when creating a new file.
 		panic(err)
 	}
-	fmt.Print(string(fileContents))
+	//fmt.Print(string(fileContents))
 
 	page := Page{
 		TextFilePath: "",
@@ -39,8 +40,12 @@ func main() {
 	// looking for {{ }} where we can inject content.
 	t := template.Must(template.New("template.tmpl").ParseFiles("template.tmpl"))
 
+	file := flag.String("file", "defaultValue", " Help text.")
+	flag.Parse()
+	fmt.Print(*file)
+
 	// Create a new, blank HTML file.
-	newFile, err := os.Create("first-post.html")
+	newFile, err := os.Create(*file)
 	if err != nil {
 		panic(err)
 	}
