@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -41,8 +42,24 @@ func main() {
 	t := template.Must(template.New("template.tmpl").ParseFiles("template.tmpl"))
 
 	file := flag.String("file", "defaultValue", " Help text.")
+
+	dir := flag.String("dir", "default", " Help me.")
+
 	flag.Parse()
 	fmt.Print(*file)
+	fmt.Print(*dir)
+	if *dir == "." {
+		directory := "."
+		files, err := ioutil.ReadDir(directory)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		for _, file := range files {
+			fmt.Println(file.Name())
+		}
+
+	}
 
 	// Create a new, blank HTML file.
 	newFile, err := os.Create(*file)
